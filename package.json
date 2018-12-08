@@ -58,7 +58,7 @@
     "src"
   ],
   "lint-staged": {
-    "*.{js,json}": [
+    "*.{js}": [
       "prettier-eslint --write",
       "git add"
     ]
