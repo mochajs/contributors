@@ -9,7 +9,7 @@
 
 const childProcess = require('child_process');
 const symbols = require('log-symbols');
-const readPkgUp = require('read-pkg-up');
+const pkgUp = require('pkg-up');
 const {dirname} = require('path');
 const writePkg = require('write-pkg');
 const parseAuthor = require('parse-author');
@@ -48,7 +48,11 @@ exports.getContributors = ({
   localeOpts = DEFAULT_LOCALE_OPTS
 } = {}) => {
   const output = childProcess.execSync('git log --format="%aN <%aE>"', {cwd});
-  const uniqueContributors = new Set(output.trim().split(/\r?\n/));
+  const uniqueContributors = new Set(
+    String(output)
+      .trim()
+      .split(/\r?\n/)
+  );
   return Array.from(uniqueContributors)
     .filter(contributor => !new Set(exclude).has(contributor))
     .sort((a, b) => a.localeCompare(b, locale, localeOpts));
@@ -70,7 +74,11 @@ exports.updateContributors = ({
   property = 'contributors'
 } = {}) => {
   const cwd = pkg ? dirname(pkg) : process.cwd();
-  const pkgJson = readPkgUp.sync(cwd);
+  pkg = pkg || pkgUp.sync(cwd);
+  if (!pkg) {
+    throw new Error(`Cannot find a package.json from ${cwd}`);
+  }
+  const pkgJson = JSON.parse(fs.readFileSync(pkg, 'utf8'));
   const currentCount = Array.isArray(pkgJson[property])
     ? pkgJson[property].length
     : 0;

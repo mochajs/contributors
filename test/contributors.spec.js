@@ -7,7 +7,7 @@ const sinon = require('sinon');
 const childProcess = require('child_process');
 const {readFileSync} = require('fs');
 const contributors = require('..');
-const readPkgUp = require('read-pkg-up');
+const pkgUp = require('pkg-up');
 const writePkg = require('write-pkg');
 const fs = require('fs');
 
@@ -53,12 +53,13 @@ describe('contributors', function() {
       processedContributors = expectedContributors.filter(
         contributor => !/boneskull/.test(contributor)
       );
-      sandbox.stub(readPkgUp, 'sync').returns(pkgJson);
+      sandbox.stub(pkgUp, 'sync').returns('/some/path/to/package.json');
       sandbox.stub(writePkg, 'sync');
       sandbox
         .stub(contributors, 'getContributors')
         .returns(processedContributors);
       sandbox.stub(fs, 'readFileSync').returns(JSON.stringify(pkgJson));
+      sandbox.stub(process, 'cwd').returns('/some/dir');
     });
 
     it('should filter out author by default', function() {
@@ -87,6 +88,26 @@ describe('contributors', function() {
         contributors.updateContributors({pkg: '/some/path/to/package.json'}),
         'to be a string'
       );
+    });
+
+    it('should attempt to find a package.json if none given', function() {
+      contributors.updateContributors();
+      expect(pkgUp.sync, 'to have a call satisfying', ['/some/dir']);
+    });
+
+    it('should throw when package.json cannot be found', function() {
+      pkgUp.sync.restore();
+      sandbox.stub(pkgUp, 'sync').returns(null);
+      expect(
+        () => contributors.updateContributors(),
+        'to throw',
+        /cannot find/i
+      );
+    });
+
+    it('should throw when package.json cannot be read', function() {
+      sandbox.stub(JSON, 'parse').throws();
+      expect(() => contributors.updateContributors(), 'to throw');
     });
   });
 });
