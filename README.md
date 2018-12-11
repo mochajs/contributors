@@ -37,6 +37,18 @@ Options:
                                               [string] [default: "contributors"]
 ```
 
+Configuration can be specified using the `@mocha/contributors` property of your `package.json`, e.g.:
+
+```json
+{
+  "@mocha/contributors": {
+    "exclude": ["some", "people"],
+    "package": "/path/to/package.json",
+    "property": "contributors"
+  }
+}
+```
+
 ## API
 
 <!-- AUTO-GENERATED-CONTENT:START (JSDOC:files=src/index.js&heading-depth=3&module-index-format=none&global-index-format=none) -->
@@ -55,9 +67,9 @@ Provides functions to get contributors from commit history, process and write th
 #### @mocha/contributors.getContributors([opts]) ⇒ <code>Array.&lt;string&gt;</code>
 Get list of contributors to Git repo at path `cwd`, excluding names/emails defined in `exclude`.  `locale` and `localeOpts` must be consistent between calls in order to avoid too much churn in the contributors list.
 
-**Kind**: static method of [<code>@mocha/contributors</code>](#module_@mocha/contributors)  
-**Returns**: <code>Array.&lt;string&gt;</code> - Sorted list of contributors  
-**Access**: public  
+**Kind**: static method of [<code>@mocha/contributors</code>](#module_@mocha/contributors)
+**Returns**: <code>Array.&lt;string&gt;</code> - Sorted list of contributors
+**Access**: public
 **See**
 
 - https://git-scm.com/docs/git-log
@@ -72,7 +84,7 @@ Get list of contributors to Git repo at path `cwd`, excluding names/emails defin
 | [opts.locale] | <code>string</code> \| <code>Array.&lt;string&gt;</code> | <code>&quot;en-US&quot;</code> | Locale(s) to pass to `String.prototype.localeCompare` |
 | [opts.localeOpts] | <code>Object</code> | <code>{sensitivity: &#x27;accent&#x27;}</code> | Options for `String.prototype.localeCompare` |
 
-**Example**  
+**Example**
 ```js
 // get list of contributors for your package (without Guy Fieri)
 const {getContributors} = require('@mocha/contributors');
@@ -88,9 +100,9 @@ getContributors(
 #### @mocha/contributors.updateContributors([opts]) ⇒ <code>string</code>
 Given a path to a package.json `pkg`, update Git contributors in the property defined by `property`, excluding those in the `exclude` array.
 
-**Kind**: static method of [<code>@mocha/contributors</code>](#module_@mocha/contributors)  
-**Returns**: <code>string</code> - Resulting `package.json`  
-**Access**: public  
+**Kind**: static method of [<code>@mocha/contributors</code>](#module_@mocha/contributors)
+**Returns**: <code>string</code> - Resulting `package.json`
+**Access**: public
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
