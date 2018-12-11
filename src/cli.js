@@ -3,18 +3,18 @@
 'use strict';
 
 const yargs = require('yargs');
-const {contributors} = require('..');
+const {updateContributors} = require('..');
 
 const argv = yargs
   .scriptName('contributors')
-  .usage('$0')
+  .usage('$0 [options]')
   .options({
-    blacklist: {
-      alias: ['b'],
-      defaultDescription: '(author in package.json)',
-      description: 'Blacklist author/email from list (repeatable)',
+    exclude: {
+      alias: ['x'],
+      defaultDescription: '(author prop of package.json)',
+      description: 'Exclude author/email from list (repeatable)',
       type: 'array',
-      coerce: blacklist => new Set(blacklist)
+      coerce: exclude => new Set(exclude)
     },
     package: {
       alias: ['p', 'pkg'],
@@ -30,10 +30,7 @@ const argv = yargs
       type: 'string'
     }
   })
-  .config()
   .pkgConf('contributors')
-  .wrap(process.stdout.columns ? Math.min(process.stdout.columns, 80) : 80)
-  .check(argv => {})
   .parse();
 
-contributors(argv);
+updateContributors(argv);
