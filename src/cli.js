@@ -30,7 +30,7 @@ const argv = yargs
       type: 'string'
     }
   })
-  .pkgConf('contributors')
+  .pkgConf('@mocha/contributors')
   .parse();
 
 updateContributors(argv);
