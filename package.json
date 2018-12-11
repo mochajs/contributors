@@ -1,7 +1,7 @@
 {
   "name": "@mocha/contributors",
   "version": "0.0.0",
-  "description": "",
+  "description": "Add & update list of Git contributors in package.json",
   "main": "src/index.js",
   "scripts": {
     "pretest": "eslint .",
@@ -9,16 +9,18 @@
     "update-readme": "md-magic --config .markdown-magic.config.js"
   },
   "keywords": [
+    "author",
+    "collaborators",
+    "committers",
     "contributor",
     "contributors",
-    "collaborators",
-    "package.json",
     "git",
-    "committers",
+    "maintainer",
     "maintainers",
-    "package",
     "manifest",
-    "author"
+    "package",
+    "package.json",
+    "repo"
   ],
   "author": "Christopher Hiller <boneskull@boneskull.com> (https://boneskull.com/)",
   "license": "Apache-2.0",
@@ -27,12 +29,13 @@
   },
   "dependencies": {
     "log-symbols": "^2.2.0",
+    "parse-author": "^2.0.0",
     "read-pkg-up": "^4.0.0",
     "write-pkg": "^3.2.0",
     "yargs": "^12.0.5"
   },
   "devDependencies": {
-    "eslint": "^5.9.0",
+    "eslint": "^5.10.0",
     "eslint-config-prettier": "^3.3.0",
     "eslint-config-semistandard": "^13.0.0",
     "eslint-config-standard": "^12.0.0",
@@ -43,11 +46,12 @@
     "eslint-plugin-standard": "^4.0.0",
     "husky": "^1.1.3",
     "lint-staged": "^8.0.4",
+    "markdown-magic": "^0.1.25",
+    "markdown-magic-jsdoc": "^1.0.1",
     "mocha": "^5.2.0",
     "prettier-eslint-cli": "^4.7.1",
-    "rewiremock": "^3.12.3",
     "semantic-release": "^15.12.0",
-    "sinon": "^7.1.1",
+    "sinon": "^7.2.0",
     "travis-deploy-once": "^5.0.9",
     "unexpected": "^10.39.2",
     "unexpected-sinon": "^10.10.1"
