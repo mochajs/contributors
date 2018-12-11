@@ -79,5 +79,8 @@
   "prettier": {
     "singleQuote": true,
     "bracketSpacing": false
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
