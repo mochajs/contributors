@@ -126,4 +126,4 @@ Small note: If editing the README, please conform to the [standard-readme](https
 
 ## License
 
-Apache-2.0 © 2018 JS Foundation & Contributors
+Apache-2.0 © 2019 JS Foundation & Contributors
