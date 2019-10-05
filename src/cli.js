@@ -28,6 +28,12 @@ const argv = yargs
       description: 'Name of property to update',
       requiresArg: true,
       type: 'string'
+    },
+    outputFile: {
+      alias: ['o', 'out'],
+      description: 'File path to write',
+      requiresArg: true,
+      type: 'string'
     }
   })
   .pkgConf('@mocha/contributors')

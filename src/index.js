@@ -13,6 +13,7 @@ const pkgUp = require('pkg-up');
 const {dirname} = require('path');
 const writePkg = require('write-pkg');
 const parseAuthor = require('parse-author');
+const mkdirp = require('mkdirp');
 const fs = require('fs');
 
 // this needs to remain the same across calls in order for sorting to be
@@ -65,13 +66,15 @@ exports.getContributors = ({
  * @param {string} [opts.pkg] - Path to `package.json`; searches for closest by default
  * @param {string[]|Set<string>} [opts.exclude] - A list of authors/emails to ignore; defaults to `author` prop of found `package.json`
  * @param {string} [opts.property=contributors] - Property name to update
+ * @param {string} [opts.targetFile] - Path to a file to write
  * @returns {string} Resulting `package.json`
  * @public
  */
 exports.updateContributors = ({
   pkg,
   exclude,
-  property = 'contributors'
+  property = 'contributors',
+  outputFile
 } = {}) => {
   const cwd = pkg ? dirname(pkg) : process.cwd();
   pkg = pkg || pkgUp.sync(cwd);
@@ -79,9 +82,17 @@ exports.updateContributors = ({
     throw new Error(`Cannot find a package.json from ${cwd}`);
   }
   const pkgJson = JSON.parse(fs.readFileSync(pkg, 'utf8'));
-  const currentCount = Array.isArray(pkgJson[property])
-    ? pkgJson[property].length
-    : 0;
+  let currentCount = 0;
+  if (outputFile) {
+    try {
+      const currentContributors = fs.readFileSync(outputFile, 'utf8');
+      currentCount = currentContributors.split('\n').length;
+    } catch (ignore) {}
+  } else {
+    currentCount = Array.isArray(pkgJson[property])
+      ? pkgJson[property].length
+      : 0;
+  }
 
   if (typeof exclude === 'undefined' && pkgJson.author) {
     const {name, email} = parseAuthor(pkgJson.author);
@@ -93,15 +104,23 @@ exports.updateContributors = ({
   const newCount = contributors.length;
 
   if (newCount !== currentCount) {
-    pkgJson[property] = contributors;
-    writePkg.sync(pkg, pkgJson);
+    let target;
+    if (outputFile) {
+      mkdirp.sync(dirname(outputFile));
+      fs.writeFileSync(outputFile, contributors.join('\n'));
+      target = outputFile;
+    } else {
+      pkgJson[property] = contributors;
+      writePkg.sync(pkg, pkgJson);
+      target = pkg;
+    }
 
     console.error(
       newCount < currentCount
         ? `${symbols.warning} Reducing contributor count by ${currentCount -
             newCount}! It's because you're using a blacklist or .mailmap, right?`
         : `${symbols.success} Wrote ${newCount -
-            currentCount} new contributors to ${pkg}`
+            currentCount} new contributors to ${target}`
     );
   } else {
     console.error(`${symbols.info} No new contributors; nothing to do.`);

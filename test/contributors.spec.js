@@ -9,6 +9,7 @@ const {readFileSync} = require('fs');
 const contributors = require('..');
 const pkgUp = require('pkg-up');
 const writePkg = require('write-pkg');
+const mkdirp = require('mkdirp');
 const fs = require('fs');
 
 const gitLogOutput = readFileSync(
@@ -54,6 +55,8 @@ describe('contributors', function() {
         contributor => !/boneskull/.test(contributor)
       );
       sandbox.stub(pkgUp, 'sync').returns('/some/path/to/package.json');
+      sandbox.stub(mkdirp, 'sync');
+      sandbox.stub(fs, 'writeFileSync').returns('/some/path/to/CONTRIBUTORS');
       sandbox.stub(writePkg, 'sync');
       sandbox
         .stub(contributors, 'getContributors')
@@ -79,6 +82,16 @@ describe('contributors', function() {
         Object.assign({}, pkgJson, {
           contributors: processedContributors
         })
+      ]);
+    });
+
+    it('should write the result from `getContributors()` to the `outputFile`', function() {
+      contributors.updateContributors({
+        outputFile: '/some/path/to/CONTRIBUTORS'
+      });
+      expect(fs.writeFileSync, 'to have a call satisfying', [
+        '/some/path/to/CONTRIBUTORS',
+        processedContributors.join('\n')
       ]);
     });
 
