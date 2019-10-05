@@ -66,7 +66,7 @@ exports.getContributors = ({
  * @param {string} [opts.pkg] - Path to `package.json`; searches for closest by default
  * @param {string[]|Set<string>} [opts.exclude] - A list of authors/emails to ignore; defaults to `author` prop of found `package.json`
  * @param {string} [opts.property=contributors] - Property name to update
- * @param {string} [opts.targetFile] - Path to a file to write
+ * @param {string} [opts.outputFile] - Path to a file to write
  * @returns {string} Resulting `package.json`
  * @public
  */
