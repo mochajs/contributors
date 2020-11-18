@@ -1,8 +1,8 @@
 # @mocha/contributors
 
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release) [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
-
 > Add & update list of Git contributors in `package.json`
+
+**MOCHA NO LONGER USES THIS PACKAGE AND IT WILL SEE NO FURTHER DEVELOPMENT**
 
 This module uses `git` to find all committers to a repo; it respects [`.mailmap`](https://www.git-scm.com/docs/git-check-mailmap#_mapping_authors), if present.
 
