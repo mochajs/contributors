@@ -52,7 +52,7 @@
     "markdown-magic-jsdoc": "^1.0.1",
     "mocha": "^5.2.0",
     "prettier-eslint-cli": "^4.7.1",
-    "semantic-release": "^15.13.15",
+    "semantic-release": "^17.2.3",
     "sinon": "^7.3.2",
     "unexpected": "^10.40.2",
     "unexpected-sinon": "^10.11.2"
